@@ -1,6 +1,6 @@
 import asyncio
-import textwrap
 from vaults.text_vault import TextVault
+from vaults.sql_vault import SqlVault
 
 
 async def user_prompt(setup_task):
@@ -33,7 +33,8 @@ async def user_prompt(setup_task):
 
 
 async def create(system_prompt):
-    return await TextVault.create(system_prompt)
+    # return await TextVault.create(system_prompt)
+    return await SqlVault.create(system_prompt)
 
 
 async def main():

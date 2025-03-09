@@ -1,12 +1,10 @@
 from typing_extensions import Self
+from vaults.vault import Role, Message, Vault
+from typing import Union
+from utils import find_most_similar
 import ollama
 import os
 import json
-import numpy as np
-from numpy.linalg import norm
-from vaults.vault import Role, Vault
-from typing import Union
-from vaults.vault import Message
 
 
 class TextVault(Vault):
@@ -123,11 +121,3 @@ class TextVault(Vault):
             if len(buffer):
                 paragraphs.append((" ").join(buffer))
             return paragraphs
-
-
-def find_most_similar(needle, haystack):
-    needle_norm = norm(needle)
-    similarity_scores = [
-        np.dot(needle, item) / (needle_norm * norm(item)) for item in haystack
-    ]
-    return sorted(zip(similarity_scores, range(len(haystack))), reverse=True)
