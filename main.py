@@ -7,13 +7,18 @@ from numpy.linalg import norm
 
 def parse_vault(filename):
     with open(filename, encoding="utf-8-sig") as f:
-        map = []
+        paragraphs = []
+        buffer = []
         for line in f.readlines():
             line = line.strip()
             if line:
-                map.append(line)
-
-        return map
+                buffer.append(line)
+            elif len(buffer):
+                paragraphs.append((" ").join(buffer))
+                buffer = []
+        if len(buffer):
+            paragraphs.append((" ").join(buffer))
+        return paragraphs
 
 
 def save_embeddings(filename, embeddings):
@@ -63,7 +68,7 @@ def main():
     filename = "vault.txt"
     vault = parse_vault(filename)
 
-    embeddings = get_embeddings(filename=filename, modelname="mistral", chunks=vault)
+    embeddings = get_embeddings(filename=filename, modelname="nomic-embed-text", chunks=vault)
 
     prompt = input("What do you want to know? -> ")
     prompt_embedding = ollama.embeddings(model="nomic-embed-text", prompt=prompt)[
